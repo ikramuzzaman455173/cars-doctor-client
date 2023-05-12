@@ -7,7 +7,9 @@ import 'react-toastify/dist/ReactToastify.css';
 const Main = () => {
   return (
     <>
+      <div className='mb-16'>
       <NavBar/>
+      </div>
       {/* <div className='text-center font-bold text-error text-4xl mt-5'>This Is Our Home Components 😃</div> */}
       <div className='min-h-[calc(100vh-130px)]'>
       <Outlet />

@@ -37,7 +37,7 @@ const Services = () => {
   const [showMore, setShowMore] = useState(false)
 
   useEffect(() => {
-    fetch('services.json')
+    fetch('http://localhost:4000/services')
       .then(response => response.json())
       .then(data => { setServices(data) })
       .catch(error => console.log(`404 page not found ${error}`))
