@@ -14,10 +14,10 @@ const SignUp = () => {
     const email = form.email.value
     const password = form.password.value
     const user={email,password}
-    console.log(user)
+    // console.log(user)
     createUser(email, password)
     .then(result => {
-      console.log(result.user);
+      // console.log(result.user);
       toast('Sign Up Account Successfully !!!',{autoClose:2000})
           }).catch(error => {
             console.log(`Error:`,error.message);

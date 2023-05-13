@@ -7,7 +7,7 @@ const Bookings = () => {
   const { user } = useContext(AuthContext)
   const [bookings, setBookings] = useState([])
   // const navigate = useNavigation()
-  const url = `http://localhost:4000/bookings?email=${user?.email}`
+  const url = `https://cars-doctor-server.vercel.app/bookings?email=${user?.email}`
   useEffect(() => {
     fetch(url).then(response => response.json()).then(data => {
       // console.log(data)
@@ -17,7 +17,7 @@ const Bookings = () => {
 
 
   const handleDeleteProduct = (id) => {
-    console.log(`handleDeleteProduct`, id)
+    // console.log(`handleDeleteProduct`, id)
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -28,13 +28,13 @@ const Bookings = () => {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:4000/bookings/${id}`, {
+        fetch(`https://cars-doctor-server.vercel.app/bookings/${id}`, {
           method: "DELETE",
         })
           .then(response => response.json())
           .then(data => {
             if (data.deletedCount > 0) {
-              console.log(data)
+              // console.log(data)
               Swal.fire(
                 'Deleted!',
                 'Your Product has been deleted.',
@@ -50,8 +50,8 @@ const Bookings = () => {
   }
 
     const handleBookingConfirmed = (id) => {
-      console.log(`handleBookingConfirmed`, id)
-      fetch(`http://localhost:4000/bookings/${id}`, {
+      // console.log(`handleBookingConfirmed`, id)
+      fetch(`https://cars-doctor-server.vercel.app/bookings/${id}`, {
         method: 'PATCH',
         headers: {
           'content-type':'application/json'
@@ -62,7 +62,7 @@ const Bookings = () => {
         .then(response => response.json())
         .then(data => {
           if (data.modifiedCount > 0) {
-            console.log(data)
+            // console.log(data)
             const remaing = bookings.filter(item => item._id !== id)
             const updated = bookings.find(item => item._id === id)
             updated.status = 'confirm'

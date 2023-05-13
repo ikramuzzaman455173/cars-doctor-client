@@ -10,7 +10,7 @@ const Checkout = () => {
   const userData = useLoaderData()
   const { _id, title, price, img } = userData
   const { user } = useContext(AuthContext)
-  console.log(user?.email);
+  // console.log(user?.email);
   const handleSubmit = (e) => {
     e.preventDefault();
     // handle form submission logic
@@ -21,8 +21,8 @@ const Checkout = () => {
     const phone = form.phone.value
     const message = form.message.value
     const booking = { customerName, date, email, phone, serviceId: _id, title, price, message, img }
-    console.log(booking);
-    fetch('http://localhost:4000/bookings', {
+    // console.log(booking);
+    fetch('https://cars-doctor-server.vercel.app/bookings', {
       method: 'POST',
       headers: {
         'content-type': 'application/json'
@@ -33,7 +33,7 @@ const Checkout = () => {
       .then(data => {
         if (data.insertedId) {
           toast('Booking Product Successfully !!!',{autoClose:2000})
-          console.log(data);
+          // console.log(data);
         }
       })
   }
