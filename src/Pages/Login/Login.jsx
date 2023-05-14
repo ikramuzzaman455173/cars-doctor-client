@@ -1,27 +1,50 @@
 import React, { useState,useContext} from 'react'
 import LoginImg from '../../assets/images/login/login.svg'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {FaEye,FaEyeSlash} from "react-icons/fa";
 import { AuthContext } from '../../Provider/AuthProvider';
 import {toast} from "react-toastify";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(true)
-  const {signInUser} = useContext(AuthContext)
+  const { signInUser } = useContext(AuthContext)
+  const location = useLocation()
+  const navigate=useNavigate()
+  const from = location.state?.from?.pathname || '/'
+  console.log(from);
   const handleSubmit = (e) => {
     e.preventDefault()
     const form = e.target
     const email = form.email.value
     const password = form.password.value
-    const user={email,password}
+    // const user={email,password}
     // console.log(user)
     signInUser(email, password)
     .then(result => {
       // console.log(result.user);
       toast('Sign In Successfully !!!',{autoClose:2000})
+      const loggedUser = { email: result.user.email }
+      console.log(loggedUser);
+        fetch(`http://localhost:4000/jwt`, {
+            method: "POST",
+            headers: {
+              'content-type':'application/json'
+            },
+            body:JSON.stringify(loggedUser)
+          })
+            .then(response => response.json())
+            .then(data => {
+              console.log(data)
+              //set jwt token store localstore not a best pactise (this is the store jwt token second choice)
+              localStorage.setItem('token', data.token)
+              setTimeout(() => {
+                navigate(from,{replace:true})
+              }, 3000);
+            }).catch(error=>console.log(`404 page not found error:${error.message}`))
           }).catch(error => {
             console.log(`Error:`,error.message);
           })
   }
+
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword)

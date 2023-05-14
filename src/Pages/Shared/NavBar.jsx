@@ -7,6 +7,7 @@ const NavBar = () => {
   const handleLogout = () => {
     logOut()
       .then(() => {
+        localStorage.removeItem('token')
           }).catch(error => {
             console.log(`Error:`,error.message);
           })
