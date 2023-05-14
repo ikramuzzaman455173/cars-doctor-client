@@ -2,18 +2,31 @@ import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../Provider/AuthProvider'
 import BookingsRow from './BookingsRow'
 import Swal from 'sweetalert2'
-// import { useNavigation } from "react-router-dom";
+import { useNavigate } from 'react-router-dom'
 const Bookings = () => {
   const { user } = useContext(AuthContext)
   const [bookings, setBookings] = useState([])
-  // const navigate = useNavigation()
-  const url = `https://cars-doctor-server.vercel.app/bookings?email=${user?.email}`
+  const navigate = useNavigate()
+  console.log(bookings);
+  // const url = `https://cars-doctor-server.vercel.app/bookings?email=${user?.email}`
+  const url = `http://localhost:4000/bookings?email=${user?.email}`
   useEffect(() => {
-    fetch(url).then(response => response.json()).then(data => {
-      // console.log(data)
-      setBookings(data)
-    }).catch(error => console.log(`404 page not found ${error}`))
-  }, [])
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        setBookings(data)
+        if (!data.error) {
+        } else {
+          navigate('/')
+        }
+      }).catch(error => console.log(`404 page not found ${error}`))
+  }, [url, navigate])
 
 
   const handleDeleteProduct = (id) => {
@@ -44,33 +57,33 @@ const Bookings = () => {
               setBookings(remaing)
             }
           })
-        }
-      })
+      }
+    })
       .catch(error => console.log(`404 page not found error`))
   }
 
-    const handleBookingConfirmed = (id) => {
-      // console.log(`handleBookingConfirmed`, id)
-      fetch(`https://cars-doctor-server.vercel.app/bookings/${id}`, {
-        method: 'PATCH',
-        headers: {
-          'content-type':'application/json'
-        },
-        body:JSON.stringify({status:'confirm'})
+  const handleBookingConfirmed = (id) => {
+    // console.log(`handleBookingConfirmed`, id)
+    fetch(`https://cars-doctor-server.vercel.app/bookings/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({ status: 'confirm' })
 
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.modifiedCount > 0) {
-            // console.log(data)
-            const remaing = bookings.filter(item => item._id !== id)
-            const updated = bookings.find(item => item._id === id)
-            updated.status = 'confirm'
-            const newBookings = [updated, ...remaing]
-            setBookings(newBookings)
-          }
-        }).catch(error=>console.log(`404 page not found ${error}`))
-    }
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.modifiedCount > 0) {
+          // console.log(data)
+          const remaing = bookings.filter(item => item._id !== id)
+          const updated = bookings.find(item => item._id === id)
+          updated.status = 'confirm'
+          const newBookings = [updated, ...remaing]
+          setBookings(newBookings)
+        }
+      }).catch(error => console.log(`404 page not found ${error}`))
+  }
   return (
     <>
       <h3 className='text-4xl font-bold text-neutral text-center'>You Are Total Bookings: {bookings.length}</h3>
@@ -91,7 +104,7 @@ const Bookings = () => {
             </tr>
           </thead>
           <tbody>
-            {bookings?.map(booking=><BookingsRow handleBookingConfirmed={handleBookingConfirmed} handleDeleteProduct={handleDeleteProduct} booking={booking} key={booking._id} />)}
+            {bookings?.map(booking => <BookingsRow handleBookingConfirmed={handleBookingConfirmed} handleDeleteProduct={handleDeleteProduct} booking={booking} key={booking._id} />)}
 
           </tbody>
 
