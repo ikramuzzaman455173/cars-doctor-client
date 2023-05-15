@@ -9,7 +9,7 @@ const Bookings = () => {
   const navigate = useNavigate()
   console.log(bookings);
   // const url = `https://cars-doctor-server.vercel.app/bookings?email=${user?.email}`
-  const url = `http://localhost:4000/bookings?email=${user?.email}`
+  const url = `https://cars-doctor-server.vercel.app/bookings?email=${user?.email}`
   useEffect(() => {
     fetch(url, {
       method: 'GET',
