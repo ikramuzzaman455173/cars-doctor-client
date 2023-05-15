@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {FaEye,FaEyeSlash} from "react-icons/fa";
 import { AuthContext } from '../../Provider/AuthProvider';
 import {toast} from "react-toastify";
+import SocialLogin from '../Shared/SocialLogin';
 const Login = () => {
   const [showPassword, setShowPassword] = useState(true)
   const { signInUser } = useContext(AuthContext)
@@ -22,24 +23,10 @@ const Login = () => {
     .then(result => {
       // console.log(result.user);
       toast('Sign In Successfully !!!',{autoClose:2000})
-      const loggedUser = { email: result.user.email }
-      console.log(loggedUser);
-        fetch(`http://localhost:4000/jwt`, {
-            method: "POST",
-            headers: {
-              'content-type':'application/json'
-            },
-            body:JSON.stringify(loggedUser)
-          })
-            .then(response => response.json())
-            .then(data => {
-              console.log(data)
-              //set jwt token store localstore not a best pactise (this is the store jwt token second choice)
-              localStorage.setItem('token', data.token)
-              setTimeout(() => {
-                navigate(from,{replace:true})
-              }, 3000);
-            }).catch(error=>console.log(`404 page not found error:${error.message}`))
+      // console.log(loggedUser);
+      setTimeout(() => {
+        navigate(from,{replace:true})
+      }, 3000);
           }).catch(error => {
             console.log(`Error:`,error.message);
           })
@@ -56,7 +43,7 @@ const Login = () => {
           <div className="mr-12 w-1/2">
             <img src={LoginImg} alt="" />
           </div>
-          <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+          <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 pb-5">
             <form className="card-body" onSubmit={handleSubmit}>
             <h1 className="text-3xl font-bold text-center">Sign In</h1>
               <div className="form-control">
@@ -80,6 +67,7 @@ const Login = () => {
               </div>
             </form>
             <p className='text-center text-md py-4 font-medium text-slate-600'>New To Car Doctor's Please? <Link to="/signUp" className='text-error hover:underline'>Sign Up</Link></p>
+            <SocialLogin/>
           </div>
         </div>
       </div>

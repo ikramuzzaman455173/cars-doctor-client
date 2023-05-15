@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import {FaEye,FaEyeSlash} from "react-icons/fa";
 import { AuthContext } from '../../Provider/AuthProvider';
 import {toast} from "react-toastify";
+import SocialLogin from '../Shared/SocialLogin';
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(true)
   const [confirmPass, setconfirmPass] = useState(true)
@@ -39,7 +40,7 @@ const SignUp = () => {
           <div className="mr-12 w-1/2">
             <img src={SignUpImg} alt="" />
           </div>
-          <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+          <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 p-5">
             <form className="card-body" onSubmit={handleSubmit}>
             <h1 className="text-3xl font-bold text-center">Sign Up</h1>
               <div className="form-control">
@@ -75,6 +76,7 @@ const SignUp = () => {
               </div>
             </form>
             <p className='text-center text-md py-4 font-medium text-slate-600'>Already Have An Account Please? <Link to="/login" className='text-error hover:underline'>Sign In</Link></p>
+            <SocialLogin/>
           </div>
         </div>
       </div>
